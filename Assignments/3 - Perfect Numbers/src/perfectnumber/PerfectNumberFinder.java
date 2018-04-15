@@ -69,9 +69,9 @@ public class PerfectNumberFinder implements Callable<String>
         int sumOfFactors = 0;
         String factors = "";
         
-        for(int i = 1; i < number; i++)
+        for(int i = 1; i <= number/2; i++)
         {
-            if(number/((float)i) == (number/i))
+            if(number%i == 0)
             {
                 sumOfFactors += i;
                 factors += String.format("%d ", i);
