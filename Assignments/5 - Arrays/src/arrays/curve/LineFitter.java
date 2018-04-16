@@ -35,10 +35,10 @@ public class LineFitter
     protected double[] y;
     
     /**The learning step used in gradient descent. */
-    protected double alpha = 0.1;
+    protected double alpha = 0.001;
     
     /**The number of times to run gradient descent. */
-    protected int numSteps = 200;
+    protected int numSteps = 10000;
     
     /**The factors of our hypothesis function. */
     protected double[] theta;
@@ -81,7 +81,8 @@ public class LineFitter
             
             for(int j = 0; j < newTheta.length; j++)
             {
-                double error = (predict(x[0]) - y[0]);
+                double error = 0;
+                
                 
                 for(int i = 0; i < n; i ++)
                 {
@@ -116,12 +117,11 @@ public class LineFitter
     /**
      *  Predicts the value at a given point {@code x}.
      * 
-     *  @param x the features to use in our prediction. {@code x} is passed
-     *           as a vararg to make single-feature predictions simpler.
+     *  @param x the features to use in our prediction. x[0] must be 1.
      * 
-     *  @return <i>theta[0] + theta[1]*x + theta[2]*x^2 + ... theta[degree]*x^(degree-1)</i>
+     *  @return <i>theta[0]*x[0] + theta[1]*x[1] + ... + theta[n]*x[n]</i>
      */
-    public double predict(double... x)
+    public double predict(double[] x)
     {
         double prediction = 0;
         
