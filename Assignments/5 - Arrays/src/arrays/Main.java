@@ -16,6 +16,7 @@
  */
 package arrays;
 
+import arrays.curve.LineFitter;
 import java.util.Scanner;
 
 /**
@@ -32,7 +33,7 @@ public class Main
     {
         Scanner scanner = new Scanner(System.in);
         
-        CurveFitter cv;
+        LineFitter line;
         
         double[][] features;
         double[] values;
@@ -50,17 +51,42 @@ public class Main
             values[i] = scanner.nextDouble();
         }
         
-        for(int x = 0; x < numValues; x++)
+        //Map our features
+        for(int i = 0; i < numValues; i++)
         {
-            features[x][0] = 1;
-            features[x][1] = x;
+            features[i][0] = 1;
+            features[i][1] = i;
         }
         
+        line = new LineFitter(features, values);
         
-        cv = new CurveFitter(features, values, 4);
-        cv.fit();
+        line.fit();
         
-        System.out.println(cv.cost());
+        System.out.println(line.cost());
     }
     
+    public static double mean(double[] values)
+    {
+        double sum = 0;
+        
+        for(double v : values)
+        {
+            sum += v;
+        }
+        
+        return (sum/values.length);
+    }
+    
+    public static double standardDeviation(double[] values)
+    {
+        double rms = 0; //Root-Mean-Square
+        double mean = mean(values);
+        
+        for(double v : values)
+        {
+            rms += Math.pow(v - mean, 2);
+        }
+        
+        return Math.sqrt(rms/values.length);
+    }
 }
