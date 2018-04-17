@@ -35,10 +35,10 @@ public class LineFitter
     protected double[] y;
     
     /**The learning step used in gradient descent. */
-    protected double alpha = 0.001;
+    protected double alpha = 0.01;
     
     /**The number of times to run gradient descent. */
-    protected int numSteps = 10000;
+    protected int numSteps = 1000;
     
     /**The factors of our hypothesis function. */
     protected double[] theta;
@@ -66,7 +66,7 @@ public class LineFitter
     }
     
     /**
-     *  Fits the curve to the data.
+     *  Fits a line to the data by finding optimal values for theta.
      * 
      *  Minimizes the cost function of our hypothesis using a gradient descent approach.
      */
@@ -99,6 +99,8 @@ public class LineFitter
     
     /**
      *  Calculates the cost of the given parameters in {@code theta}.
+     * 
+     *  The cost function is the mean squared error of every data point to the current line.
      * 
      *  @return the mean squared error between {@code data[i][j]} and {@link predict(j)}
      */

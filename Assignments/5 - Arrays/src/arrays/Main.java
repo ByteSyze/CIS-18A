@@ -52,7 +52,7 @@ public class Main extends Application
         double[] values;
         int numValues;
         
-        System.out.print("How many doubles do you want to store in your array? ");
+        System.out.print("How many double-precision values do you want to store in your array? ");
         numValues = scanner.nextInt();
         
         values = new double[numValues];
@@ -80,8 +80,25 @@ public class Main extends Application
         
         line.fit();
         
+        /////////////////////////////////
+        //
+        // Print our results
+        //
+        /////////////////////////////////
+        
+        final String formatting = "%35s%10.3f\n";
+        
+        System.out.print("Trained parameters: ");
         print(line.getTheta());
         System.out.println();
+        
+        System.out.println("The statistics for your user entered array is:");
+        System.out.println("----------------------------------------------");
+        System.out.printf(formatting, "Minimum:", min(values));
+        System.out.printf(formatting, "Maximum:", max(values));
+        System.out.printf(formatting, "Average:", mean(values));
+        System.out.printf(formatting, "Standard deviation (population):", standardDeviation(false, values));
+        System.out.printf(formatting, "Standard deviation (sample):", standardDeviation(true, values));
         
         /////////////////////////////////
         //
@@ -124,7 +141,12 @@ public class Main extends Application
         stage.show();
     }
     
-    public static double mean(double[] values)
+    /**
+     *  @param values the values to calculate a mean average from.
+     * 
+     *  @return the mean value of {@code values}
+     */
+    public static double mean(double... values)
     {
         double sum = 0;
         
@@ -136,20 +158,64 @@ public class Main extends Application
         return (sum/values.length);
     }
     
-    public static double standardDeviation(double[] values)
+    /**
+     *  @param values the values containing a minimum.
+     * 
+     *  @return the minimum value of {@code values}
+     */
+    public static double min(double... values)
+    {
+        double min = values[0];
+        
+        for(double v : values)
+        {
+            if(v < min)
+                min = v;
+        }
+        
+        return min;
+    }
+    
+    /**
+     *  @param values the values containing a maximum.
+     * 
+     *  @return the maximum value of {@code values}
+     */
+    public static double max(double... values)
+    {
+        double max = values[0];
+        
+        for(double v : values)
+        {
+            if(v > max)
+                max = v;
+        }
+        
+        return max;
+    }
+    
+    /**
+     *  @param sample determines whether to return population or sample standard deviation
+     *  @param values the values to calculate the population standard deviation from.
+     * 
+     *  @return the standard deviation (sigma) of {@code values}
+     */
+    public static double standardDeviation(boolean sample, double... values)
     {
         double rms = 0; //Root-Mean-Square
         double mean = mean(values);
+        
+        int n = sample ? values.length - 1 : values.length;
         
         for(double v : values)
         {
             rms += Math.pow(v - mean, 2);
         }
         
-        return Math.sqrt(rms/values.length);
+        return Math.sqrt(rms/n);
     }
     
-    public static void print(double[] array)
+    public static void print(double... array)
     {
         System.out.print("[ ");
         
